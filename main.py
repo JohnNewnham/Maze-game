@@ -6,10 +6,11 @@ from generate_grid import generate_grid
 def draw_maze() -> None:
     for x, y in grid.iterable():
         gridcell: Gridcell = grid.get_cell((x, y))
-        if gridcell.left: display.blit(left_img, (64*x-32, 64*y-32))
-        if gridcell.top: display.blit(top_img, (64*x-32, 64*y-32))
-        if gridcell.right: display.blit(right_img, (64*x-32, 64*y-32))
-        if gridcell.bottom: display.blit(bottom_img, (64*x-32, 64*y-32))
+        # Each cell contains information on whether there is not a wall to its right and bottom only.
+        if (x==0): display.blit(left_img, (64*x-32, 64*y-32))
+        if (y==0): display.blit(top_img, (64*x-32, 64*y-32))
+        if not gridcell.right: display.blit(right_img, (64*x-32, 64*y-32))
+        if not gridcell.bottom: display.blit(bottom_img, (64*x-32, 64*y-32))
 
 
 
