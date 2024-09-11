@@ -2,10 +2,29 @@ import pygame
 from py_objects import Gridcell, Grid, Movement
 from generate_grid import generate_grid
 
-def main():
+
+def draw_maze() -> None:
+    for x, y in grid.iterable():
+        gridcell: Gridcell = grid.get_cell((x, y))
+        if gridcell.left: display.blit(left_img, (64*x-32, 64*y-32))
+        if gridcell.top: display.blit(top_img, (64*x-32, 64*y-32))
+        if gridcell.right: display.blit(right_img, (64*x-32, 64*y-32))
+        if gridcell.bottom: display.blit(bottom_img, (64*x-32, 64*y-32))
+
+
+
+if __name__ == "__main__":
+
+    # Import images.
+    left_img = pygame.image.load("images/left1.png")
+    top_img = pygame.image.load("images/top1.png")
+    right_img = pygame.image.load("images/right1.png")
+    bottom_img = pygame.image.load("images/bottom1.png")
+
+    # Set constants for the game.
     gridsize: tuple[int, int] = (10,10)
     gridsquare_size: int = 64
-
+    
     grid: Grid = generate_grid(gridsize)
     movement: Movement = Movement()
     W_pressed = False
@@ -20,8 +39,9 @@ def main():
     # Enter gameloop.
     running = True
     while running:
-        # Set background to white.
+        # Set background to white and draw maze.
         display.fill((255, 255, 255))
+        draw_maze()
 
         movement.set_false()
 
@@ -64,8 +84,3 @@ def main():
         if movement.bottom: print("Bottom")
 
         pygame.display.update()
-
-
-
-if __name__ == "__main__":
-    main()

@@ -43,9 +43,8 @@ class Grid:
 
     def iterable(self) -> Generator[tuple[int, int], None, None]:
         # Returns the coordinates of each cell one at a time as a tuple.
-        coords: list[int, int] = [0, 0]
         for x_coord in range(self.__gridsize[0]):
             for y_coord in range(self.__gridsize[1]):
-                yield (coords[0], coords[1])
+                yield (x_coord, y_coord)
                 y_coord += 1
             x_coord += 1
