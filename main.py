@@ -2,7 +2,7 @@ import pygame
 from py_objects import Gridcell, Grid, Movement
 from misc_funcs import generate_grid, shift_origin
 
-debug: bool = True
+debug: bool = False
 
 def draw_maze() -> None:
     for x, y in grid.iterable():
@@ -51,6 +51,7 @@ if __name__ == "__main__":
     pygame.init()
 
     display = pygame.display.set_mode((gridsize[0]*gridsquare_size, gridsize[1]*gridsquare_size))
+    pygame.display.set_caption("Maze game")
 
     # Enter gameloop.
     running = True

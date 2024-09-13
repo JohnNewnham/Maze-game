@@ -3,6 +3,7 @@ from random import choice
 
 def generate_grid(gridsize: tuple[int, int]) -> Grid:
     grid = Grid(gridsize)
+    for _ in range(10*gridsize[0]*gridsize[1]): shift_origin(grid)
     return grid
 
 def shift_origin(grid: Grid) -> None:
