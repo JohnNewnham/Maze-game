@@ -1,7 +1,8 @@
 import pygame
 from py_objects import Gridcell, Grid, Movement
-from generate_grid import generate_grid
+from misc_funcs import generate_grid, shift_origin
 
+debug: bool = True
 
 def draw_maze() -> None:
     for x, y in grid.iterable():
@@ -12,6 +13,14 @@ def draw_maze() -> None:
         if not gridcell.right: display.blit(right_img, (64*x-32, 64*y-32))
         if not gridcell.bottom: display.blit(bottom_img, (64*x-32, 64*y-32))
 
+        if debug:
+            match gridcell.right:
+                case 1: display.blit(right_arrow, (64*x-32, 64*y-32))
+                case -1: display.blit(left_arrow, (64*x-32, 64*y-32))
+            match gridcell.bottom:
+                case 1: display.blit(bottom_arrow, (64*x-32, 64*y-32))
+                case -1: display.blit(top_arrow, (64*x-32, 64*y-32))
+
 
 
 if __name__ == "__main__":
@@ -21,6 +30,12 @@ if __name__ == "__main__":
     top_img = pygame.image.load("images/top1.png")
     right_img = pygame.image.load("images/right1.png")
     bottom_img = pygame.image.load("images/bottom1.png")
+
+    if debug:
+        left_arrow = pygame.image.load("images/left_arrow.png")
+        top_arrow = pygame.image.load("images/top_arrow.png")
+        right_arrow = pygame.image.load("images/right_arrow.png")
+        bottom_arrow = pygame.image.load("images/bottom_arrow.png")
 
     # Set constants for the game.
     gridsize: tuple[int, int] = (10,10)
@@ -79,7 +94,11 @@ if __name__ == "__main__":
         if not movement.one_direction(): movement.set_false()
 
         # Move the player.
-        if movement.left: print("Left")
+        if movement.left: 
+            if debug:
+                shift_origin(grid)
+                print(grid.origin)
+            print("Left")
         if movement.right: print("Right")
         if movement.top: print("Top")
         if movement.bottom: print("Bottom")

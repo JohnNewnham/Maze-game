@@ -40,21 +40,21 @@ class Grid:
                 else:
                     grid[i].append(Gridcell(right=1, bottom=0))
 
-        self.__grid: list[list[Gridcell]] = grid
+        self.grid: list[list[Gridcell]] = grid
         self.gridsize: tuple[int, int] = gridsize
-        self.origin: list[int, int] = list(gridsize)
+        self.origin: list[int, int] = [coord-1 for coord in gridsize]
 
     def get_cell(self, coords: tuple[int, int]) -> (Gridcell | None):
         # Coords must be less than gridsize as indexing starts at 0.
         if (coords[0] >= self.gridsize[0]) or (coords[1] >= self.gridsize[1]) or (len(coords) != 2):
             return None
-        return self.__grid[coords[0]][coords[1]]
+        return self.grid[coords[0]][coords[1]]
     
     def set_cell(self, gridcell: Gridcell, coords: tuple[int, int]) -> None:
         # Coords must be less than gridsize as indexing starts at 0.
         if (coords[0] >= self.gridsize[0]) or (coords[1] >= self.gridsize[1]) or (len(coords) != 2):
             return
-        self.__grid[coords[0]][coords[1]] = gridcell
+        self.grid[coords[0]][coords[1]] = gridcell
 
     def iterable(self) -> Generator[tuple[int, int], None, None]:
         # Returns the coordinates of each cell one at a time as a tuple.
