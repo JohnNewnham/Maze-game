@@ -8,20 +8,23 @@ def drawMaze() -> None:
     for x, y in grid.iterable():
         gridcell: Gridcell = grid.getCell((x, y))
         # Each cell contains information on whether there is not a wall to its right and bottom only.
-        if (x==0): display.blit(left_img, (64*x-32, 64*y-32))
-        if (y==0): display.blit(top_img, (64*x-32, 64*y-32))
-        if not gridcell.right: display.blit(right_img, (64*x-32, 64*y-32))
-        if not gridcell.bottom: display.blit(bottom_img, (64*x-32, 64*y-32))
+        if (x==0): display.blit(left_img, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
+        if (y==0): display.blit(top_img, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
+        if not gridcell.right: display.blit(right_img, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
+        if not gridcell.bottom: display.blit(bottom_img, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
 
         if debug:
             match gridcell.right:
-                case 1: display.blit(right_arrow, (64*x-32, 64*y-32))
-                case -1: display.blit(left_arrow, (64*x-32, 64*y-32))
+                case 1: display.blit(right_arrow, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
+                case -1: display.blit(left_arrow, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
             match gridcell.bottom:
-                case 1: display.blit(bottom_arrow, (64*x-32, 64*y-32))
-                case -1: display.blit(top_arrow, (64*x-32, 64*y-32))
-    display.blit(goal_img, (64*goal_pos[0], 64*goal_pos[1]))
-    display.blit(player_img, (64*player_pos[0], 64*player_pos[1]))
+                case 1: display.blit(bottom_arrow, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
+                case -1: display.blit(top_arrow, (gridsquare_size*x-gridsquare_size/2, gridsquare_size*y-gridsquare_size/2))
+    display.blit(goal_img, (gridsquare_size*goal_pos[0], gridsquare_size*goal_pos[1]))
+    display.blit(ghost_img, (gridsquare_size*grid.origin[0], gridsquare_size*grid.origin[1]))
+    display.blit(player_img, (gridsquare_size*player_pos[0], gridsquare_size*player_pos[1]))
+    display.blit(text_surface, ((display.get_width() - text_surface.get_width())/2,
+                gridsquare_size*gridsize[1]+(gridsquare_size - text_surface.get_height())/2))
 
 
 
@@ -34,6 +37,7 @@ if __name__ == "__main__":
     bottom_img: pygame.Surface = pygame.image.load("images/bottom1.png")
     player_img: pygame.Surface = pygame.image.load("images/player.png")
     goal_img: pygame.Surface = pygame.image.load("images/goal.png")
+    ghost_img: pygame.Surface = pygame.image.load("images/ghost.png")
 
     if debug:
         left_arrow: pygame.Surface = pygame.image.load("images/left_arrow.png")
@@ -58,7 +62,10 @@ if __name__ == "__main__":
 
     pygame.init()
 
-    display: pygame.Surface = pygame.display.set_mode((gridsize[0]*gridsquare_size, gridsize[1]*gridsquare_size))
+    font: pygame.font = pygame.font.Font("ZTTalk-SemiBold.ttf", gridsquare_size*3//4)
+    text_surface: pygame.Surface = font.render(f"Score: {score}", False, (0, 0, 0))
+
+    display: pygame.Surface = pygame.display.set_mode((gridsize[0]*gridsquare_size, (gridsize[1]+1)*gridsquare_size))
     pygame.display.set_caption("Maze game")
 
     # Enter gameloop.
@@ -66,6 +73,7 @@ if __name__ == "__main__":
     while running:
         # Set background to white and draw maze.
         display.fill((255, 255, 255))
+        text_surface = font.render(f"Score: {score}", False, (0, 0, 0))
         drawMaze()
 
         movement.setAllFalse()
@@ -119,7 +127,7 @@ if __name__ == "__main__":
 
         if movement:
             # If only one key is input, do things.
-            shiftOrigin(grid)
+            for _ in range(4): shiftOrigin(grid)
             score += 1
 
             # Check win condition.
