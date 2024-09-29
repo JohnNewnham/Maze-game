@@ -13,4 +13,4 @@ The aim is to reach the goal in as few moves as possible (with as low of a score
 
 ## Acknowledgements
 * Font - Copyright © 2024 by Zelow Type.
-* [Maze algorithm by CaptainLuma on Youtube] (https://www.youtube.com/watch?v=1dZmw1a8HMY&t=0s) - Created for use in his Minecraft contraption.
+* [Maze algorithm by CaptainLuma on Youtube](https://www.youtube.com/watch?v=1dZmw1a8HMY&t=0s) - Created for use in his Minecraft contraption.
